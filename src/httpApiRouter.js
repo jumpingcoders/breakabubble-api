@@ -1,5 +1,5 @@
 const express = require('express');
-//const Post = require('./mongoose/Post.js');
+//const Post = require('./mongoose/Reactions.js');
 
 const router = express.Router();
 
@@ -12,11 +12,20 @@ router.get('/users/:hash', function (req, res, next) {
     res
         .status(200)
         .json({
-            "record": "https://www.google.cz/search?tbm=isch&q=stickman+animation&spell=1&sa=X&ved=0ahUKEwjXz5nD7-TYAhURFewKHYiAATIQvwUIOygA&biw=1920&bih=974&dpr=1#imgrc=pRsC8TKrY8z3jM:",
-            "id": 123456789,
-            "articleScore": 23,
-            "userScore": "Hello World",
-            "time": "2017-01-19"
+            userId: 'putinlover',
+            reactions: [
+                {
+                    type: 'RUSSIA',
+                    value: 10
+                },
+                {
+                    type: 'EU',
+                    value: 1
+                }
+
+            ],
+            reactions_russia_eu_vs: 1,
+            time: Date.now().getTime()
         });
 });
 
