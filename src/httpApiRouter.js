@@ -16,15 +16,15 @@ router.get('/users/:hash', function (req, res, next) {
             reactions: [
                 {
                     type: 'RUSSIA',
-                    value: 10
+                    value: 100//0-100
                 },
                 {
                     type: 'EU',
-                    value: 1
+                    value: 1//0-100
                 }
 
             ],
-            reactions_russia_eu_vs: 1,
+            reactions_russia_vs_eu: 0,//0-100
             time: new Date().getTime()/1000
         });
 });
