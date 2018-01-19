@@ -25,7 +25,7 @@ router.get('/users/:hash', function (req, res, next) {
 
             ],
             reactions_russia_eu_vs: 1,
-            time: Date.now().getTime()
+            time: new Date().getTime()/1000
         });
 });
 
