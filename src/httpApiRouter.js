@@ -74,6 +74,7 @@ router.get('/users/:userId', async function (req, res, next) {
             },{reactions_russia_vs_eu: 0,weight: 0});
 
 
+            const reactions_russia_vs_eu_weight = sentiments.weight;
             const reactions_russia_vs_eu = sentiments.weight===0?50:(sentiments.reactions_russia_vs_eu / sentiments.weight);
 
 
@@ -108,10 +109,11 @@ router.get('/users/:userId', async function (req, res, next) {
             res
                 .status(200)
                 .json({
-                    userId: 'putinlover',
+                    userId: req.params.userId,
                     //sentiments,
                     reactions,
                     reactions_russia_vs_eu,//0-100
+                    reactions_russia_vs_eu_weight,//0-100
                     time: new Date().getTime() / 1000
                 });
 
