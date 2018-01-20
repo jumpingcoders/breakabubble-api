@@ -113,7 +113,7 @@ router.get('/users/:userId', async function (req, res, next) {
                     //sentiments,
                     reactions,
                     reactions_russia_vs_eu,//0-100
-                    reactions_russia_vs_eu_weight,//0-100
+                    //reactions_russia_vs_eu_weight,//0-100
                     time: new Date().getTime() / 1000
                 });
 
