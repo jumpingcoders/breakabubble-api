@@ -19,9 +19,27 @@ router.get('/users/:userId', async function (req, res, next) {
 
         try {
 
-            const reactions = await
-                Reaction.find({userId: req.params.userId});
-            const sentiments = await
+            //.find({userId: req.params.userId})
+            const reactions = await Reaction.aggregate(
+                [
+                    {
+                        $match: { userId: req.params.userId},
+                    },
+                    {
+                        $group : {
+                            _id : { url: "$url" },
+                            reaction: {$last: "$reaction" },
+                            date: {$last: "$date" },
+                            count: { $sum: 1 }
+                        }
+                    }
+                ]
+            )
+
+
+
+
+            /*const sentiments = await
                 Promise.all(reactions.map(async function (reaction) {
 
                         return await getContent(reaction.url);
@@ -44,25 +62,15 @@ router.get('/users/:userId', async function (req, res, next) {
 
                     }
                 ))
-            ;
+            ;*/
 
 
             res
                 .status(200)
                 .json({
                     userId: 'putinlover',
-                    sentiments,
-                    reactions: [
-                        {
-                            type: 'RUSSIA',
-                            value: 99//0-100
-                        },
-                        {
-                            type: 'EU',
-                            value: 1//0-100
-                        }
-
-                    ],
+                    //sentiments,
+                    reactions,
                     reactions_russia_vs_eu: 0,//0-100
                     time: new Date().getTime() / 1000
                 });
