@@ -30,14 +30,22 @@ router.get('/users/:hash', function (req, res, next) {
 });
 
 
-router.post('/users/:hash/reactions', function (req, res, next) {
+router.post('/users/:userId/reactions', function (req, res, next) {
 
 
 
+    const reaction = new Reaction({
+        "userId": req.params.userId,
+        "reaction": req.body.reaction,
+        "url": req.body.url,
+        "date": new Date().getTime(),
+        "_sentiments": [{
+            "type": "FAKE",
+            "value": 111
+        }]
+    });
 
 
-
-    const reaction = new Reaction(req.body);
     reaction.save(function(error) {
 
 
@@ -47,7 +55,10 @@ router.post('/users/:hash/reactions', function (req, res, next) {
                 .status(400)
                 .json({
                     status: 'error',
-                    message: error.message
+                    message: error.message,
+                    x: req.body,
+                    y: reaction,
+                    z: req.params,
                 });
 
         }else{
@@ -65,7 +76,7 @@ router.post('/users/:hash/reactions', function (req, res, next) {
     });
 
 
-    console.log(reaction);
+    //console.log(reaction);
     /*res
         .status(200)
         .json({
