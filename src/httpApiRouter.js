@@ -24,7 +24,10 @@ router.get('/users/:userId', async function (req, res, next) {
             let reactions = await Reaction.aggregate(
                 [
                     {
-                        $match: { userId: req.params.userId},
+                        $match: {
+                            userId: req.params.userId,
+                            reaction: { $ne: 'IGNORE'  }
+                        },
                     },
                     {
                         $group : {
