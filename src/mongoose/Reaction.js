@@ -9,4 +9,4 @@ const Reaction = require('./connection.js').model('reaction', {
     }]
 });
 
-module.exports = Post;
+module.exports = Reaction;

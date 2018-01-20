@@ -1,5 +1,5 @@
 const express = require('express');
-//const Post = require('./mongoose/Reactions.js');
+const Reaction = require('./mongoose/Reaction.js');
 
 const router = express.Router();
 
@@ -27,6 +27,50 @@ router.get('/users/:hash', function (req, res, next) {
             reactions_russia_vs_eu: 0,//0-100
             time: new Date().getTime()/1000
         });
+});
+
+
+router.post('/users/:hash/reactions', function (req, res, next) {
+
+
+
+
+
+
+    const reaction = new Reaction(req.body);
+    reaction.save(function(error) {
+
+
+        if(error){
+
+            res
+                .status(400)
+                .json({
+                    status: 'error',
+                    message: error.message
+                });
+
+        }else{
+
+            res
+                .status(200)
+                .json({
+                    status: 'ok',
+                    message: 'saved'
+                });
+
+        }
+
+
+    });
+
+
+    console.log(reaction);
+    /*res
+        .status(200)
+        .json({
+            status: Reaction.validate(req.body),
+        });*/
 });
 
 
