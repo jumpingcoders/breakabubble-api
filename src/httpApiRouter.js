@@ -112,7 +112,7 @@ router.get('/users/:userId', async function (req, res, next) {
                     userId: req.params.userId,
                     //sentiments,
                     reactions,
-                    reactions_russia_vs_eu,//0-100
+                    reactions_russia_vs_eu: Math.floor(reactions_russia_vs_eu),//0-100
                     //reactions_russia_vs_eu_weight,//0-100
                     time: new Date().getTime() / 1000
                 });
