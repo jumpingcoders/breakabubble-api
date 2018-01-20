@@ -23,6 +23,7 @@ router.get('/users/:userId', async function (req, res, next) {
             //.find({userId: req.params.userId})
             let reactions = await Reaction.aggregate(
                 [
+                    { $sort : { date : 1 } },
                     {
                         $match: {
                             userId: req.params.userId,
@@ -36,7 +37,8 @@ router.get('/users/:userId', async function (req, res, next) {
                             date: {$last: "$date" },
                             count: { $sum: 1 }
                         }
-                    }
+                    },
+                    { $limit : 10 }
                 ]
             );
 
@@ -61,7 +63,7 @@ router.get('/users/:userId', async function (req, res, next) {
 
                 return sentiments;*/
 
-                console.log(reaction);
+                //console.log(reaction);
 
 
 
