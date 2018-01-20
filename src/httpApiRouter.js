@@ -64,11 +64,18 @@ router.get('/users/:userId', async function (req, res, next) {
 
                 const sentimensFromReaction = getSentimensFromReaction(reaction);
 
+
+                if(sentimensFromReaction.weight<0){
+                    sentimensFromReaction.weight = -sentimensFromReaction.weight;
+                    sentimensFromReaction.reactions_russia_vs_eu = 100-sentimensFromReaction.reactions_russia_vs_eu;
+                }
+
+
                 reaction.sentiment = sentimensFromReaction;//todo better
 
                 return {
                     reactions_russia_vs_eu: sentiments.reactions_russia_vs_eu + sentimensFromReaction.reactions_russia_vs_eu*sentimensFromReaction.weight,
-                    weight: sentiments.weight + Math.abs(sentimensFromReaction.weight),
+                    weight: sentiments.weight + sentimensFromReaction.weight,
                 };
 
             },{reactions_russia_vs_eu: 0,weight: 0});
