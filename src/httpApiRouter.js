@@ -74,7 +74,7 @@ router.get('/users/:userId', async function (req, res, next) {
             },{reactions_russia_vs_eu: 0,weight: 0});
 
 
-            const reactions_russia_vs_eu = sentiments.reactions_russia_vs_eu / sentiments.weight;
+            const reactions_russia_vs_eu = sentiments.weight===0?50:(sentiments.reactions_russia_vs_eu / sentiments.weight);
 
 
 
