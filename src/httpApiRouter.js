@@ -2,6 +2,7 @@ const express = require('express');
 const Reaction = require('./mongoose/Reaction.js');
 var requestPromise = require('request-promise');
 var getContent = require('./getContent');
+var getSentimensFromReaction = require('./Sentiments');
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.get('/users/:userId', async function (req, res, next) {
         try {
 
             //.find({userId: req.params.userId})
-            const reactions = await Reaction.aggregate(
+            let reactions = await Reaction.aggregate(
                 [
                     {
                         $match: { userId: req.params.userId},
@@ -34,7 +35,46 @@ router.get('/users/:userId', async function (req, res, next) {
                         }
                     }
                 ]
-            )
+            );
+
+
+
+            reactions = reactions.map((reaction)=>({
+                url: reaction._id.url,
+                reaction: reaction.reaction,
+                date: reaction.date
+            }));
+
+
+
+
+            sentiments = reactions.reduce((sentiments,reaction)=>{
+
+                /*const sentimensFromReaction = getSentimensFromReaction(reaction);
+
+                for(const key of Object.keys(sentimensFromReaction)){
+                    sentiments[key] = sentiments[key]||0 + sentimensFromReaction[key];
+                }
+
+                return sentiments;*/
+
+                console.log(reaction);
+
+
+
+                const sentimensFromReaction = getSentimensFromReaction(reaction);
+
+                reaction.sentiment = sentimensFromReaction;//todo better
+
+                return {
+                    reactions_russia_vs_eu: sentiments.reactions_russia_vs_eu + sentimensFromReaction.reactions_russia_vs_eu*sentimensFromReaction.weight,
+                    weight: sentiments.weight + sentimensFromReaction.weight,
+                };
+
+            },{reactions_russia_vs_eu: 0,weight: 0});
+
+
+            const reactions_russia_vs_eu = sentiments.reactions_russia_vs_eu / sentiments.weight;
 
 
 
@@ -71,7 +111,7 @@ router.get('/users/:userId', async function (req, res, next) {
                     userId: 'putinlover',
                     //sentiments,
                     reactions,
-                    reactions_russia_vs_eu: 0,//0-100
+                    reactions_russia_vs_eu,//0-100
                     time: new Date().getTime() / 1000
                 });
 
