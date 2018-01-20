@@ -1,14 +1,14 @@
 const express = require('express');
 const Reaction = require('./mongoose/Reaction.js');
 var requestPromise = require('request-promise');
-var cheerio = require('cheerio');
-
+var getContent = require('./getContent');
 
 const router = express.Router();
 
 router.use('/*', function (req, res, next) {
     next();
 });
+
 
 
 router.get('/users/:userId', async function (req, res, next) {
@@ -21,43 +21,7 @@ router.get('/users/:userId', async function (req, res, next) {
             const sentiments = await
                 Promise.all(reactions.map(async function (reaction) {
 
-                        const htmlString = await
-                            requestPromise(reaction.url);
-
-
-                        $ = cheerio.load(htmlString);
-
-
-                        const contents = [];
-
-                        for(const element of $('*:not(:has(*))').toArray()){
-
-
-                            let contentText = cheerio(element).text();
-                            contentText = contentText.trim();
-
-
-                            if(
-                                contentText.length > 50 &&
-                                contentText[0] !== '<'
-
-                            ){
-                                contents.push(contentText);
-                            }
-
-
-
-
-                        }
-
-                        return contents;
-
-
-                        const content = $('body').text();
-
-
-
-                        return content;
+                        return await getContent(reaction.url);
 
 
                         const analysis = JSON.parse(await requestPromise({
