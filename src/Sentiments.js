@@ -60,7 +60,7 @@ const DOMAINS = {
 
 
 const REACTIONS = {
-    'IGNORE': -.1,
+    'IGNORE': -.2,
     'LIKE': 1,
     'LOVE': 2,
     'HAHA': 1.5,

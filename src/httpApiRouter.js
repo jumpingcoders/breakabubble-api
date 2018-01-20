@@ -68,7 +68,7 @@ router.get('/users/:userId', async function (req, res, next) {
 
                 return {
                     reactions_russia_vs_eu: sentiments.reactions_russia_vs_eu + sentimensFromReaction.reactions_russia_vs_eu*sentimensFromReaction.weight,
-                    weight: sentiments.weight + sentimensFromReaction.weight,
+                    weight: sentiments.weight + Math.abs(sentimensFromReaction.weight),
                 };
 
             },{reactions_russia_vs_eu: 0,weight: 0});
